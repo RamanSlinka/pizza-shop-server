@@ -1,0 +1,16 @@
+{
+  "name": "pizza-shop-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Raman Slinka",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
