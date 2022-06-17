@@ -1,13 +1,11 @@
-import  {Schema, model, ObjectId} from 'mongoose';
-
+const   mongoose = require ('mongoose');
+const {Schema, model} = mongoose;
 
 const User = new Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    diskSpace: {type: Number, default: 1024**3*10},
-    usedSpace: {type: Number, default: 0},
-    avatar: {type: String},
-    files: [{type: ObjectId, ref: 'File'}]
+    role: {type: String, defaultValue: 'USER'},
 })
 
 module.exports = model('User',  User)
+
