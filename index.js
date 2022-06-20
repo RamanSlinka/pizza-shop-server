@@ -2,7 +2,8 @@ const express =require ('express');
 const mongoose = require ("mongoose");
 const config =require ('config');
 const cors = require ('cors');
-const router = require ('./routes/userRouter.js')
+const userRouter = require ('./routes/userRouter.js')
+const pizzasRouter = require ('./routes/pizzasRouter.js')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');
 
 const PORT = config.get('serverPort');
@@ -10,16 +11,13 @@ const PORT = config.get('serverPort');
 const app = express();
 app.use(express.json())
 app.use(cors())
-app.use('/api', router)
+app.use('/api', userRouter)
+app.use('/api', pizzasRouter)
 
 
 
 //handler error, last middleware
 app.use(errorHandler)  //may be at the end!
-
-app.get('/', (req, res) => {
-    res.status(200).json('server work')
-})
 
  const  startApp = async () => {
     try {
