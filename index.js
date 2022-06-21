@@ -6,7 +6,7 @@ const userRouter = require ('./routes/userRouter.js')
 const pizzasRouter = require ('./routes/pizzasRouter.js')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');
 
-const PORT = config.get('serverPort');
+const PORT = process.env.PORT ||  config.get('serverPort');
 
 const app = express();
 app.use(express.json())
