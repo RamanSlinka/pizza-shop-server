@@ -5,9 +5,10 @@ const User = require('../models/User')
 
 
 const generateJwt = (id, email, role) => {
-   return  jwt.sign(
+    return jwt.sign(
         {id, email, role},
-        process.env.SECRET_KEY,
+        'key',
+      //  process.env.SECRET_KEY,   //-> bug
         {expiresIn: '24h'}
     )
 }
@@ -18,31 +19,37 @@ class UserController {
         if(!email || !password) {
             return next(ApiError.bedRequest('Incorrect email or password'))
         }
-        const candidate = await User.findOne({where: {email}})
+        const candidate = await User.findOne({email})
         if (candidate) {
-            return  next(ApiError.bedRequest('User already exist'))
+            return next(ApiError.bedRequest('User already exist'))
         }
         const hashPassword = await bcrypt.hash(password, 5)
-        const user = await User.create({email, role, password: hashPassword})
+        const user = new User({
+            email: req.body.email,
+            role: req.body.role,
+            password: hashPassword
+        })
+        await user.save()
 
         // const basket = await Basket.create({userId: user._id})
         // use when will be "Basket" Schema
-        const token = generateJwt(user._id,user.email, user.role)
+
+        const token = generateJwt(user._id, user.email, user.role)
         return res.json({token})
     }
 
-    async login(req, res, next ) {
-const {email, password} = req.body
-        const user = await User.findOne({where: {email}})
-        if(!user) {
+    async login(req, res, next) {
+        const {email, password} = req.body
+        const user = await User.findOne({email})
+        if (!user) {
             return next(ApiError.internal('User not find'))
         }
-        let comparePassword = bcrypt.compare(password, user.password)
-        if(!comparePassword) {
-            return  next(ApiError.internal('Password wrong'))
+        let comparePassword = bcrypt.compareSync(password, user.password)
+        if (!comparePassword) {
+            return next(ApiError.internal('Password wrong'))
         }
-        const token = generateJwt(user._id, user.email,user.role)
-        return req.json(token)
+        const token = generateJwt(user._id, user.email, user.role)
+        return res.json({token})
     }
 
     async check(req, res, next) {
