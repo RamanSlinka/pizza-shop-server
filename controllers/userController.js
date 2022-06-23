@@ -8,7 +8,7 @@ const generateJwt = (id, email, role) => {
     return jwt.sign(
         {id, email, role},
         'key',
-      //  process.env.SECRET_KEY,   //-> bug
+        //  process.env.SECRET_KEY,   //-> bug
         {expiresIn: '24h'}
     )
 }
@@ -16,7 +16,7 @@ const generateJwt = (id, email, role) => {
 class UserController {
     async registration(req, res, next) {
         const {email, password, role} = req.body
-        if(!email || !password) {
+        if (!email || !password) {
             return next(ApiError.bedRequest('Incorrect email or password'))
         }
         const candidate = await User.findOne({email})
@@ -53,11 +53,8 @@ class UserController {
     }
 
     async check(req, res, next) {
-        const {id} = req.query
-        if (!id) {
-            return next(ApiError.bedRequest('not ID'))
-        }
-        res.json(id)
+        const token = generateJwt(req.user._id, req.user.email, req.user.role)
+        return res.json({token})
     }
 }
 
