@@ -14,16 +14,16 @@ const generateJwt = (id, email, role) => {
 }
 
 class UserController {
-    async registration(req, res, next) {
+    async registration(req, res) {
 
         try {
             const {email, password, role} = req.body
             if (!email || !password) {
-                return next(ApiError.bedRequest('Incorrect email or password'))
+                return res.status(400).json('Incorrect email or password')
             }
             const candidate = await User.findOne({email})
             if (candidate) {
-                return next(ApiError.bedRequest('User already exist'))
+                return res.status(500).json('User already exist')
             }
             const hashPassword = await bcrypt.hash(password, 5)
             const user = new User({
@@ -37,7 +37,7 @@ class UserController {
             // use when will be "Basket" Schema
 
             const token = generateJwt(user._id, user.email, user.role)
-            return res.json({token})
+            return res.json({message: 'User was created'},{token})
 
         } catch (e) {
             console.log(e)
