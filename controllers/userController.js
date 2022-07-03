@@ -37,11 +37,11 @@ class UserController {
             // use when will be "Basket" Schema
 
             const token = generateJwt(user._id, user.email, user.role)
-            return res.json({message: 'User was created'},{token})
+            return res.json({message: 'User was created'})
 
         } catch (e) {
             console.log(e)
-            return res.status(500).json(e)
+            return res.status(500).json(e, 'server error')
         }
 
     }
