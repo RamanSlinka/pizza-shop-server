@@ -17,7 +17,7 @@ class UserController {
     async registration(req, res) {
 
         try {
-            const {email, password, role} = req.body
+            const {email, password, name, role} = req.body
             if (!email || !password) {
                 return res.status(400).json('Incorrect email or password')
             }
@@ -25,9 +25,11 @@ class UserController {
             if (candidate) {
                 return res.status(500).json('User already exist')
             }
+            const candidateName = await name
             const hashPassword = await bcrypt.hash(password, 5)
             const user = new User({
                 email: req.body.email,
+                name: candidateName,
                 role: req.body.role,
                 password: hashPassword
             })
@@ -64,6 +66,7 @@ class UserController {
                 user: {
                     id: user.id,
                     email: user.email,
+                    name: user.name,
                     role: user.role
                 }
             })
@@ -84,6 +87,7 @@ class UserController {
                 user: {
                     id: user.id,
                     email: user.email,
+                    name: user.name,
                     role: user.role
                 }
             })
