@@ -7,30 +7,57 @@ class pizzasController {
     async create(req, res) {
 
         // const {imageUrl, name, types, sizes, price, category, rating} = req.body
-        const pizza = new Pizza ({imageUrl : req.body.imageUrl,
+        const pizza = new Pizza({
+            imageUrl: req.body.imageUrl,
             name: req.body.name,
             types: req.body.types,
             sizes: req.body.sizes,
             price: req.body.price,
             category: req.body.category,
-            rating: req.body.rating})
+            rating: req.body.rating
+        })
 
-         await pizza.save()
+        await pizza.save()
         return res.json(pizza)
     }
 
     async getAll(req, res) {
-      const pizzas =await config.get('pizzas')
+        // try {
+        //     const {sort} = req.query
+        //     let pizzas
+        //     switch (sort) {
+        //         case "name":
+        //             pizzas = await Pizza.find().sort({name: 1})
+        //             break
+        //         case "price":
+        //             pizzas = await Pizza.find().sort({price: 1})
+        //             break
+        //         case "rating":
+        //             pizzas = await Pizza.find().sort({rating: 1})
+        //             break
+        //     }
+        //     return res.json(pizzas)
+        // } catch (e) {
+        //     console.log(e)
+        //     return res.status(500).json({message: `Can't get pizzas... `})
+        // }
+
+
+        const pizzas = await Pizza.find()
+        // const pizzas = await config.get('pizzas')
         return res.json(pizzas)
     }
 
-    // async getOne(req, res, next) {
-    //     const {id} = req.query
-    //     if (!id) {
-    //         return next(ApiError.bedRequest('not ID'))
-    //     }
-    //     res.json(id)
-    // }
+    async getOne(req, res) {
+        // const {id} = req.query
+      Pizza
+          .findById(req.params.id)
+          .then(() => res.json(req.query))
+          .catch((e) => {
+              console.log(e);
+              res.json ({message: 'Error'})
+          })
+    }
 }
 
 module.exports = new pizzasController()
