@@ -7,7 +7,7 @@ const Pizza = new Schema({
     types: [Number],
     sizes: [ Number],
     price:  Number,
-    category:  Number,
+    category:  String,
     rating: Number
 })
 

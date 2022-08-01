@@ -58,6 +58,19 @@ class pizzasController {
               res.json ({message: 'Error'})
           })
     }
+
+    async filterPizzas(req, res) {
+        try {
+            const searchName = req.query.search
+            let files = await Pizza.find()
+            files = files.filter(file => file.category.includes(searchName))
+            return res.json(files)
+        } catch (e) {
+            console.log(e)
+            return res.status(400).json({message: "Search error"})
+        }
+    }
+
 }
 
 module.exports = new pizzasController()
