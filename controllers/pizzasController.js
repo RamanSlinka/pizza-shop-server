@@ -1,7 +1,4 @@
-const ApiError = require('../error/ApiError');
 const Pizza = require('../models/Pizza')
-const config = require("config");
-
 
 class pizzasController {
     async create(req, res) {
@@ -22,30 +19,30 @@ class pizzasController {
     }
 
     async getAll(req, res) {
-        // try {
-        //     const {sort} = req.query
-        //     let pizzas
-        //     switch (sort) {
-        //         case "name":
-        //             pizzas = await Pizza.find().sort({name: 1})
-        //             break
-        //         case "price":
-        //             pizzas = await Pizza.find().sort({price: 1})
-        //             break
-        //         case "rating":
-        //             pizzas = await Pizza.find().sort({rating: 1})
-        //             break
-        //     }
-        //     return res.json(pizzas)
-        // } catch (e) {
-        //     console.log(e)
-        //     return res.status(500).json({message: `Can't get pizzas... `})
-        // }
+        try {
+            const {sort} = req.query
+            let pizzas
+            switch (sort) {
+                case "name":
+                    pizzas = await Pizza.find().sort({name: 1})
+                    break
+                case "price":
+                    pizzas = await Pizza.find().sort({price: 1})
+                    break
+                case "rating":
+                    pizzas = await Pizza.find().sort({rating: 1})
+                    break
+            }
 
+            return res.json(pizzas)
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: `Can't get pizzas... `})
+        }
 
-        const pizzas = await Pizza.find()
+        // const pizzas = await Pizza.find()
         // const pizzas = await config.get('pizzas')
-        return res.json(pizzas)
+       // return res.json(pizzas)
     }
 
     async getOne(req, res) {
