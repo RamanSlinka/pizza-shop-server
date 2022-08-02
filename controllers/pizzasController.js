@@ -30,7 +30,7 @@ class pizzasController {
                     pizzas = await Pizza.find().sort({price: 1})
                     break
                 case "rating":
-                    pizzas = await Pizza.find().sort({rating: 1})
+                    pizzas = await Pizza.find().sort({rating: -1})
                     break
             }
 
